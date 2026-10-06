@@ -1,20 +1,106 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, Button, StyleSheet } from "react-native";
 
-export default function App() {
+const students = [
+  {
+    id: "s1",
+    name: "Ana Cruz",
+    course: "IT313",
+    units: 21,
+    isFullLoad: true,
+  },
+  {
+    id: "s2",
+    name: "Bea Santos",
+    course: "IT313",
+    units: 15,
+    isFullLoad: false,
+  },
+  {
+    id: "s3",
+    name: "Cid Ramos",
+    course: "IT313",
+    units: 18,
+    isFullLoad: true,
+  },
+  {
+    id: "s4",
+    name: "Dex Alonzo",
+    course: "IT313",
+    units: 12,
+    isFullLoad: false,
+  },
+];
+
+function StudentCard({ name, course, units, isFullLoad }) {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={styles.card}>
+      <Text style={styles.name}>{name}</Text>
+      <Text>Course: {course}</Text>
+      <Text>Units: {units}</Text>
+
+      {isFullLoad && <Text style={styles.fullLoad}>Full Load</Text>}
     </View>
   );
 }
 
+function StudentRoster() {
+  const [roster, setRoster] = useState(students);
+
+  const reverseRoster = () => {
+    setRoster([...roster].reverse());
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>
+        Student Roster - {roster.length} students
+      </Text>
+
+      {roster.map((student) => (
+        <StudentCard
+          key={student.id}
+          name={student.name}
+          course={student.course}
+          units={student.units}
+          isFullLoad={student.isFullLoad}
+        />
+      ))}
+
+      <Button title="Reverse Roster" onPress={reverseRoster} />
+    </View>
+  );
+}
+
+export default StudentRoster;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 20,
+    paddingTop: 60,
+  },
+
+  header: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 15,
+  },
+
+  card: {
+    padding: 15,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderRadius: 8,
+  },
+
+  name: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+
+  fullLoad: {
+    marginTop: 5,
+    fontWeight: "bold",
   },
 });
